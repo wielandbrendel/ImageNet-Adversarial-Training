@@ -31,8 +31,13 @@ def create():
     with TowerContext(tower_name='', is_training=False):
         logits = model.get_logits(image)
 
-    with tf.Session() as session:
-         model = get_model_loader(weights_path).init(sess)
-    
-    fmodel = TensorFlowModel(image, logits, channel_axis=1, bounds=[0, 255.], preprocessing=(127.5, 127.5))
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth=True
+    session = tf.Session(config=config)
+    with session.as_default():
+         model = get_model_loader(weights_path).init(session)
+            
+         fmodel = TensorFlowModel(image, logits, channel_axis=1, bounds=[0, 255.], preprocessing=(127.5, 127.5))
+
     return fmodel
+
