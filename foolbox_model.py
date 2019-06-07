@@ -4,6 +4,7 @@ import argparse
 import nets
 from tensorpack import TowerContext
 import tensorflow as tf
+from foolbox import zoo
 
 from tensorpack.tfutils import get_model_loader
 
@@ -30,7 +31,8 @@ def create():
     with TowerContext(tower_name='', is_training=False):
         logits = model.get_logits(image)
 
-    model = get_model_loader(weights_path).init(sess)
+    with tf.Session() as session:
+         model = get_model_loader(weights_path).init(sess)
     
     fmodel = TensorFlowModel(image, logits, channel_axis=1, bounds=[0, 255.], preprocessing=(127.5, 127.5))
     return fmodel
