@@ -4,6 +4,7 @@ import argparse
 import nets
 from tensorpack import TowerContext
 import tensorflow as tf
+from foolbox import zoo
 
 from tensorpack.tfutils import get_model_loader
 
